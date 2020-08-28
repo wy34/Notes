@@ -8,13 +8,35 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UITableViewController {
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
+        configNavbar()
+        
+        tableView.backgroundColor = .tertiarySystemBackground
     }
 
+    // MARK: - Config Navbar
+    func configNavbar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.label]
+        appearance.backgroundColor = .tertiarySystemBackground
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
+        navigationItem.title = "Folders"
+        navigationController?.navigationBar.tintColor = .systemGray
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editPressed))
+    }
+    
+    // MARK: - Selector
+    @objc func editPressed() {
+        print("Edit pressed")
+    }
 
 }
 
