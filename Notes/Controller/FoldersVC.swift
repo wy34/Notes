@@ -59,8 +59,8 @@ class FoldersVC: UITableViewController {
         newFolderTextField.clearButtonMode = .whileEditing
         newFolderTextField.addTarget(self, action: #selector(enableSaveFolder), for: .editingChanged)
     }
-    
-    // MARK: - Selector Methods
+
+    // MARK: - Selector
     @objc func editPressed() {
         print("Edit pressed")
     }
@@ -76,12 +76,12 @@ class FoldersVC: UITableViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         saveAction = UIAlertAction(title: "Save", style: .default, handler: nil)
         saveAction.isEnabled = false
-        
+
         alertController.addAction(cancelAction)
         alertController.addAction(saveAction)
         present(alertController, animated: true)
     }
-    
+
     @objc func enableSaveFolder() {
         saveAction.isEnabled = newFolderTextField.text?.trimmingCharacters(in: .whitespaces) != "" ? true : false
     }
