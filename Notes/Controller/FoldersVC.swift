@@ -9,6 +9,10 @@
 import UIKit
 
 class FoldersVC: UITableViewController {
+    // MARK: - Constants/Variables
+    var newFolderTextField: UITextField!
+    var saveAction: UIAlertAction!
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,28 +51,39 @@ class FoldersVC: UITableViewController {
         tableView.backgroundColor = .tertiarySystemBackground
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Folder")
     }
+
+    // MARK: - Config NewFolderTextField
+    func configure(newFolderTextField: UITextField) {
+        self.newFolderTextField = newFolderTextField
+        newFolderTextField.placeholder =  "Name"
+        newFolderTextField.clearButtonMode = .whileEditing
+        newFolderTextField.addTarget(self, action: #selector(enableSaveFolder), for: .editingChanged)
+    }
     
-    // MARK: - Selector
+    // MARK: - Selector Methods
     @objc func editPressed() {
         print("Edit pressed")
     }
     
     @objc func newFolderPressed() {
-        var textField: UITextField!
         let alertController = UIAlertController(title: "New Folder", message: "Enter a name for this folder.", preferredStyle: .alert)
         alertController.view.tintColor = UIColor.notesYellow
-        
+
         alertController.addTextField { (tf) in
-            textField = tf
-            tf.placeholder = "Name"
+            self.configure(newFolderTextField: tf)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let saveAction = UIAlertAction(title: "Save", style: .default, handler: nil)
+        saveAction = UIAlertAction(title: "Save", style: .default, handler: nil)
+        saveAction.isEnabled = false
         
         alertController.addAction(cancelAction)
         alertController.addAction(saveAction)
         present(alertController, animated: true)
+    }
+    
+    @objc func enableSaveFolder() {
+        saveAction.isEnabled = newFolderTextField.text?.trimmingCharacters(in: .whitespaces) != "" ? true : false
     }
 }
 

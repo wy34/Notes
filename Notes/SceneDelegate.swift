@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         UINavigationBar.appearance().prefersLargeTitles = true
-        let navController = UINavigationController(rootViewController: ViewController())
+        let navController = UINavigationController(rootViewController: FoldersVC())
         window?.rootViewController = navController
     }
 
