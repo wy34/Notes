@@ -21,7 +21,7 @@ class FoldersVC: UITableViewController {
         configTableView()
     }
     
-    // MARK: - Config Navbar
+    // MARK: - Navbar
     func configNavbar() {
         let appearance = UINavigationBarAppearance()
         appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.label]
@@ -31,25 +31,32 @@ class FoldersVC: UITableViewController {
         navigationController?.navigationBar.compactAppearance = appearance
         
         navigationItem.title = "Folders"
-        navigationController?.navigationBar.tintColor = .systemGray
+        navigationController?.navigationBar.tintColor = .notesYellow
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editPressed))
+        navigationItem.rightBarButtonItem?.tintColor = .systemGray
     }
     
-    // MARK: - Config Toolbar
+    // MARK: - Toolbar
     func configToolbar() {
         navigationController?.isToolbarHidden = false
         navigationController?.toolbar.tintColor = UIColor.notesYellow
+        navigationController?.toolbar.barTintColor = .tertiarySystemBackground
+        navigationController?.toolbar.isTranslucent = false
+        navigationController?.toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+
         toolbarItems = [
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(title: "New Folder", style: .plain, target: self, action: #selector(newFolderPressed))
         ]
     }
     
-    // MARK: - Config TableView
+    // MARK: - TableView
     func configTableView() {
         tableView.backgroundColor = .tertiarySystemBackground
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Folder")
+        tableView.tableFooterView = UIView()
+        tableView.separatorInset = UIEdgeInsets.zero
     }
 
     // MARK: - Config NewFolderTextField
@@ -60,7 +67,7 @@ class FoldersVC: UITableViewController {
         newFolderTextField.addTarget(self, action: #selector(enableSaveFolder), for: .editingChanged)
     }
 
-    // MARK: - Selector
+    // MARK: - Selector Methods
     @objc func editPressed() {
         print("Edit pressed")
     }
@@ -98,5 +105,10 @@ extension FoldersVC {
         cell.backgroundColor = .tertiarySystemBackground
         cell.textLabel?.text = "row"
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let notesVC = NotesVC()
+        navigationController?.pushViewController(notesVC, animated: true)
     }
 }
