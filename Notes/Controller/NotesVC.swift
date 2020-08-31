@@ -65,4 +65,9 @@ extension NotesVC {
         cell.backgroundColor = .tertiarySystemBackground
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contentVC = ContentVC()
+        navigationController?.pushViewController(contentVC, animated: true)
+    }
 }
