@@ -38,7 +38,7 @@ class NotesVC: UITableViewController {
     // MARK: - Tableview
     func configTableView() {
         tableView.backgroundColor = .tertiarySystemBackground
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Note")
+        tableView.register(NoteCell.self, forCellReuseIdentifier: NoteCell.reuseId)
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets.zero
     }
@@ -60,9 +60,7 @@ extension NotesVC {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Note", for: indexPath)
-        cell.textLabel?.text = "note"
-        cell.backgroundColor = .tertiarySystemBackground
+        let cell = tableView.dequeueReusableCell(withIdentifier: NoteCell.reuseId, for: indexPath) as! NoteCell
         return cell
     }
     
