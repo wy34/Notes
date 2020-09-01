@@ -26,6 +26,7 @@ class FoldersVC: UITableViewController {
         let appearance = UINavigationBarAppearance()
         appearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.label]
         appearance.backgroundColor = .tertiarySystemBackground
+        appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
@@ -35,6 +36,7 @@ class FoldersVC: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editPressed))
         navigationItem.rightBarButtonItem?.tintColor = .systemGray
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     // MARK: - Toolbar
@@ -54,9 +56,14 @@ class FoldersVC: UITableViewController {
     // MARK: - TableView
     func configTableView() {
         tableView.backgroundColor = .tertiarySystemBackground
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Folder")
+        tableView.register(FolderCell.self, forCellReuseIdentifier: FolderCell.reuseId)
+        tableView.register(FolderNameCell.self, forCellReuseIdentifier: FolderNameCell.reuseId)
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets.zero
+        
+        let view = UIView()
+        view.backgroundColor = .tertiarySystemBackground
+        tableView.tableHeaderView = view
     }
 
     // MARK: - Config NewFolderTextField
@@ -97,18 +104,34 @@ class FoldersVC: UITableViewController {
 // MARK: - UITableViewController Delegate/Datasource Methods
 extension FoldersVC {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 10
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Folder", for: indexPath)
-        cell.backgroundColor = .tertiarySystemBackground
-        cell.textLabel?.text = "row"
+        var cell: UITableViewCell
+
+        
+        if indexPath.row % 2 != 0 {
+            cell = tableView.dequeueReusableCell(withIdentifier: FolderCell.reuseId, for: indexPath) as! FolderCell
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: FolderNameCell.reuseId, for: indexPath) as! FolderNameCell
+            cell.selectionStyle = .none
+        }
+        
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return indexPath.row % 2 == 0 ? nil : indexPath
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let notesVC = NotesVC()
         navigationController?.pushViewController(notesVC, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.row % 2 == 0 ? 50 : 45
     }
 }

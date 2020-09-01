@@ -17,6 +17,8 @@
 		3D524E4124F8B4A800ECE719 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D524E4024F8B4A800ECE719 /* UIView.swift */; };
 		3D524E4424F8B4E300ECE719 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D524E4324F8B4E300ECE719 /* UIColor.swift */; };
 		3DE3B96A24FD9E6B00617DEE /* ContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE3B96924FD9E6B00617DEE /* ContentVC.swift */; };
+		3DE3B96D24FDA86200617DEE /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE3B96C24FDA86200617DEE /* FolderCell.swift */; };
+		3DE3B96F24FDC75300617DEE /* FolderNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE3B96E24FDC75300617DEE /* FolderNameCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		3D524E4024F8B4A800ECE719 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		3D524E4324F8B4E300ECE719 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		3DE3B96924FD9E6B00617DEE /* ContentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentVC.swift; sourceTree = "<group>"; };
+		3DE3B96C24FDA86200617DEE /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
+		3DE3B96E24FDC75300617DEE /* FolderNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderNameCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,7 @@
 				3D524E3F24F8B49C00ECE719 /* Extension */,
 				3D3B395A24F5C72E007B88BD /* AppDelegate.swift */,
 				3D3B395C24F5C72E007B88BD /* SceneDelegate.swift */,
+				3DE3B96B24FDA84B00617DEE /* View */,
 				3D524E3E24F8AF1C00ECE719 /* Controller */,
 				3D3B396324F5C730007B88BD /* Assets.xcassets */,
 				3D3B396524F5C730007B88BD /* LaunchScreen.storyboard */,
@@ -93,6 +98,15 @@
 				3D524E4324F8B4E300ECE719 /* UIColor.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		3DE3B96B24FDA84B00617DEE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3DE3B96E24FDC75300617DEE /* FolderNameCell.swift */,
+				3DE3B96C24FDA86200617DEE /* FolderCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,8 +179,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE3B96F24FDC75300617DEE /* FolderNameCell.swift in Sources */,
 				3D524E4124F8B4A800ECE719 /* UIView.swift in Sources */,
 				3D524E4424F8B4E300ECE719 /* UIColor.swift in Sources */,
+				3DE3B96D24FDA86200617DEE /* FolderCell.swift in Sources */,
 				3D3B395F24F5C72E007B88BD /* FoldersVC.swift in Sources */,
 				3D3B395B24F5C72E007B88BD /* AppDelegate.swift in Sources */,
 				3D3B395D24F5C72E007B88BD /* SceneDelegate.swift in Sources */,
