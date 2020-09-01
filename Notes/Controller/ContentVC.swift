@@ -15,6 +15,7 @@ class ContentVC: UIViewController {
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.text = "August 30, 2020, 5:48 PM"
         label.textAlignment = .center
+        label.textColor = .systemGray
         return label
     }()
     
@@ -38,6 +39,13 @@ class ContentVC: UIViewController {
         configNavbar()
         configToolbar()
         layoutSubviews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if textView.text.isEmpty {
+            textView.becomeFirstResponder()
+        }
     }
     
     // MARK: - Navbar

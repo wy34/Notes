@@ -12,6 +12,15 @@ class NotesVC: UITableViewController {
     // MARK: - Subviews
     private let searchController = UISearchController(searchResultsController: nil)
     
+    private let noteCountLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.text = "24 Notes"
+        label.textColor = .label
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +41,8 @@ class NotesVC: UITableViewController {
     func configToolbar() {
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(composeNewNote))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolbarItems = [space, composeButton]
+        let noteCountButton = UIBarButtonItem(customView: noteCountLabel)
+        toolbarItems = [space, noteCountButton, space, composeButton]
     }
     
     // MARK: - Tableview

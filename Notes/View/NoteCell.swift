@@ -15,20 +15,24 @@ class NoteCell: UITableViewCell {
     // MARK: - Subviews
     private let mainPreviewLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
         label.text = "Main Preview Title Main Preview Title Main Preview Title Main Preview Title"
+//        label.backgroundColor = .red
         return label
     }()
     
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.text = "99/99/99"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textColor = .systemGray
         return label
     }()
     
     private let secondaryPreviewLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.text = "Secondary Preview Label Secondary Preview Label Secondary Preview Label"
         label.textColor = .systemGray2
         return label
@@ -63,8 +67,8 @@ class NoteCell: UITableViewCell {
     // MARK: - Layout
     func layoutComponents() {
         addSubview(contentStack)
-        contentStack.setDimension(width: widthAnchor, wMult: 0.85)
+        contentStack.setDimension(width: widthAnchor, wMult: 0.87)
         contentStack.anchor(top: topAnchor, bottom: bottomAnchor, paddingTop: 10, paddingBottom: 10)
-        contentStack.center(to: self, by: .centerX, withMultiplierOf: 1.01)
+        contentStack.center(to: self, by: .centerX, withMultiplierOf: 1.025)
     }
 }
