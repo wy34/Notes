@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class FoldersVC: UITableViewController {
     // MARK: - Constants/Variables
+    var fetchController: NSFetchedResultsController<Folder>?
     var newFolderTextField: UITextField!
     var saveAction: UIAlertAction!
     
@@ -19,6 +21,8 @@ class FoldersVC: UITableViewController {
         configNavbar()
         configToolbar()
         configTableView()
+        CoreDataManager.shared.loadFolders()
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     // MARK: - Navbar
@@ -88,7 +92,10 @@ class FoldersVC: UITableViewController {
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        saveAction = UIAlertAction(title: "Save", style: .default, handler: nil)
+        saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
+            CoreDataManager.shared.createFolder(withName: self.newFolderTextField.text, andCount: 0)
+        }
+
         saveAction.isEnabled = false
 
         alertController.addAction(cancelAction)
@@ -104,6 +111,7 @@ class FoldersVC: UITableViewController {
 // MARK: - UITableViewController Delegate/Datasource Methods
 extension FoldersVC {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        let c =  fetchController?.sections![section].objects?.count
         return 10
     }
     
