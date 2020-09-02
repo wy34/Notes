@@ -9,8 +9,16 @@
 import UIKit
 
 class FolderCell: UITableViewCell {
-    // MARK: - ReuseId
+    // MARK: - Constants/Variables
     static let reuseId = "FolderCell"
+    
+    var folder: Folder? {
+        didSet {
+            guard let folder = folder else { return }
+            notesLabel.text = folder.name
+            countLabel.text = "\(folder.noteCount)"
+        }
+    }
     
     // MARK: - Subviews
     private let folderIcon: UIImageView = {

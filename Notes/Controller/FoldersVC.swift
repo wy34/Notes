@@ -85,6 +85,7 @@ class FoldersVC: UITableViewController {
         request = Folder.fetchRequest()
         request?.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         fetchController = NSFetchedResultsController(fetchRequest: request!, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchController?.delegate = self
     }
 
     // MARK: - Selector Methods
@@ -120,14 +121,13 @@ class FoldersVC: UITableViewController {
 // MARK: - UITableViewController Delegate/Datasource Methods
 extension FoldersVC {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let count = fetchController?.sections?[section].numberOfObjects else { return 0 }
-        return count
+        guard let numberOfRows = fetchController?.sections?[section].numberOfObjects else { return 0 }
+        return numberOfRows
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FolderCell.reuseId, for: indexPath) as! FolderCell
-        cell.countLabel.text = "\(fetchController?.object(at: indexPath).noteCount ?? 0)"
-        cell.notesLabel.text = fetchController?.object(at: indexPath).name
+        cell.folder = fetchController?.object(at: indexPath)
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -138,6 +138,28 @@ extension FoldersVC {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 45
+    }
+}
+
+// MARK: - NSFetchResultsControllerDelegate
+extension FoldersVC: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+            case .insert:
+                if let newIndexPath = newIndexPath {
+                    self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                }
+            default:
+                break
+        }
     }
 }
