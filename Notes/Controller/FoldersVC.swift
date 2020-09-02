@@ -11,6 +11,7 @@ import CoreData
 
 class FoldersVC: UITableViewController {
     // MARK: - Constants/Variables
+    var request: NSFetchRequest<Folder>?
     var fetchController: NSFetchedResultsController<Folder>?
     var newFolderTextField: UITextField!
     var saveAction: UIAlertAction!
@@ -21,8 +22,8 @@ class FoldersVC: UITableViewController {
         configNavbar()
         configToolbar()
         configTableView()
-        CoreDataManager.shared.loadFolders()
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        setupFetchController()
+        CoreDataManager.shared.loadFolders(withFetchController: fetchController!)
     }
     
     // MARK: - Navbar
@@ -61,7 +62,7 @@ class FoldersVC: UITableViewController {
     func configTableView() {
         tableView.backgroundColor = .tertiarySystemBackground
         tableView.register(FolderCell.self, forCellReuseIdentifier: FolderCell.reuseId)
-        tableView.register(FolderNameCell.self, forCellReuseIdentifier: FolderNameCell.reuseId)
+        //tableView.register(FolderNameCell.self, forCellReuseIdentifier: FolderNameCell.reuseId)
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets.zero
         
@@ -76,6 +77,14 @@ class FoldersVC: UITableViewController {
         newFolderTextField.placeholder =  "Name"
         newFolderTextField.clearButtonMode = .whileEditing
         newFolderTextField.addTarget(self, action: #selector(enableSaveFolder), for: .editingChanged)
+    }
+    
+    // MARK: - Setup NSFetchResultsController
+    func setupFetchController() {
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        request = Folder.fetchRequest()
+        request?.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        fetchController = NSFetchedResultsController(fetchRequest: request!, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
     }
 
     // MARK: - Selector Methods
@@ -111,27 +120,16 @@ class FoldersVC: UITableViewController {
 // MARK: - UITableViewController Delegate/Datasource Methods
 extension FoldersVC {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let c =  fetchController?.sections![section].objects?.count
-        return 10
+        guard let count = fetchController?.sections?[section].numberOfObjects else { return 0 }
+        return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell: UITableViewCell
-
-        
-        if indexPath.row % 2 != 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: FolderCell.reuseId, for: indexPath) as! FolderCell
-            cell.accessoryType = .disclosureIndicator
-        } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: FolderNameCell.reuseId, for: indexPath) as! FolderNameCell
-            cell.selectionStyle = .none
-        }
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: FolderCell.reuseId, for: indexPath) as! FolderCell
+        cell.countLabel.text = "\(fetchController?.object(at: indexPath).noteCount ?? 0)"
+        cell.notesLabel.text = fetchController?.object(at: indexPath).name
+        cell.accessoryType = .disclosureIndicator
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return indexPath.row % 2 == 0 ? nil : indexPath
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -140,6 +138,6 @@ extension FoldersVC {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.row % 2 == 0 ? 50 : 45
+        return 50
     }
 }

@@ -13,12 +13,6 @@ class FolderCell: UITableViewCell {
     static let reuseId = "FolderCell"
     
     // MARK: - Subviews
-    private let folderNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Folder Name"
-        return label
-    }()
-    
     private let folderIcon: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(systemName: "folder")
@@ -26,13 +20,13 @@ class FolderCell: UITableViewCell {
         return iv
     }()
     
-    private let notesLabel: UILabel = {
+    let notesLabel: UILabel = {
         let label = UILabel()
         label.text = "Notes"
         return label
     }()
     
-    private let countLabel: UILabel = {
+    let countLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.text = "19"

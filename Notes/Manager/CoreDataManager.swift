@@ -12,7 +12,8 @@ import CoreData
 class CoreDataManager {
     static let shared = CoreDataManager()
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
-    var fetchController: NSFetchedResultsController<Folder>!
+//    var fetchController: NSFetchedResultsController<Folder>!
+    
 
     func save(withContext context: NSManagedObjectContext) {
         do {
@@ -28,12 +29,12 @@ class CoreDataManager {
         save(withContext: context!)
     }
     
-    func loadFolders() {
-        let request: NSFetchRequest<Folder> = Folder.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        fetchController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
+    func loadFolders(withFetchController controller: NSFetchedResultsController<Folder>) {
+//        let request: NSFetchRequest<Folder> = Folder.fetchRequest()
+//        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+//        controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
         do {
-            try? fetchController.performFetch()
+            try? controller.performFetch()
         }
     }
 }

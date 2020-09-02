@@ -13,7 +13,7 @@ class FolderNameCell: UITableViewCell {
     static let reuseId = "FolderNameCell"
     
     // MARK: - Subviews
-    private let cellNameLabel: UILabel = {
+    let cellNameLabel: UILabel = {
         let label = UILabel()
         label.text = "NameOfFolder"
         label.textColor = .systemGray
