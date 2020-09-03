@@ -36,5 +36,15 @@ class CoreDataManager {
     
     func delete(folder: Folder) {
         context?.delete(folder)
+        save(withContext: context!)
+    }
+    
+    func createNote(withMainPreview mp: String, andSecondaryPreview sp: String, inFolder folder: Folder) {
+        let note = Note(context: context!)
+        note.mainPreview = mp
+        note.secondaryPreview = sp
+        note.date = Date()
+        note.parentFolder = folder
+        save(withContext: context!)
     }
 }

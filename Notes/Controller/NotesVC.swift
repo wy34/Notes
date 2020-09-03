@@ -9,13 +9,17 @@
 import UIKit
 
 class NotesVC: UITableViewController {
+    // MARK: - Constants/Variables
+    let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    var parentFolder: Folder!
+    
     // MARK: - Subviews
     private let searchController = UISearchController(searchResultsController: nil)
     
     private let noteCountLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "24 Notes"
+        label.text = "No Notes"
         label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 12)
         return label
@@ -35,6 +39,7 @@ class NotesVC: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editPressed))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.isActive = false
     }
     
     // MARK: - Toolbar
@@ -59,14 +64,16 @@ class NotesVC: UITableViewController {
     }
     
     @objc func composeNewNote() {
-        
+        let contentVC = ContentVC()
+        navigationController?.pushViewController(contentVC, animated: true)
+        CoreDataManager.shared.createNote(withMainPreview: "", andSecondaryPreview: "", inFolder: parentFolder)
     }
 }
 
 // MARK: - UITableView Delegate/Datasource
 extension NotesVC {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

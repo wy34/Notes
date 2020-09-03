@@ -134,6 +134,7 @@ extension FoldersVC {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let notesVC = NotesVC()
+        notesVC.parentFolder = fetchController?.object(at: indexPath)
         navigationController?.pushViewController(notesVC, animated: true)
     }
     
@@ -146,7 +147,6 @@ extension FoldersVC {
             if let folderToDelete = self.fetchController?.object(at: indexPath) {
                 CoreDataManager.shared.delete(folder: folderToDelete)
                 completion(true)
-                // not deleting from sqlite
             }
         }
         

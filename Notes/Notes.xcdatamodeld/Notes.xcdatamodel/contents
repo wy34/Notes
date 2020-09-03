@@ -12,7 +12,7 @@
         <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="childNote" inverseEntity="Folder"/>
     </entity>
     <elements>
-        <element name="Note" positionX="224.35546875" positionY="-58.4296875" width="128" height="103"/>
+        <element name="Note" positionX="-237.9765625" positionY="-29.71875" width="128" height="103"/>
         <element name="Folder" positionX="-8.328125" positionY="-27.5703125" width="128" height="88"/>
     </elements>
 </model>
