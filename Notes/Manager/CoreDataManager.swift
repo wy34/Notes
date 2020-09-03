@@ -12,7 +12,6 @@ import CoreData
 class CoreDataManager {
     static let shared = CoreDataManager()
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
-//    var fetchController: NSFetchedResultsController<Folder>!
     
 
     func save(withContext context: NSManagedObjectContext) {
@@ -30,11 +29,12 @@ class CoreDataManager {
     }
     
     func loadFolders(withFetchController controller: NSFetchedResultsController<Folder>) {
-//        let request: NSFetchRequest<Folder> = Folder.fetchRequest()
-//        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-//        controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
         do {
             try? controller.performFetch()
         }
+    }
+    
+    func delete(folder: Folder) {
+        context?.delete(folder)
     }
 }

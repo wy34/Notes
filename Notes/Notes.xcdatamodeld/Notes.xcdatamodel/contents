@@ -3,8 +3,16 @@
     <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
         <attribute name="noteCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="childNote" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="parentFolder" inverseEntity="Note"/>
+    </entity>
+    <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="mainPreview" optional="YES" attributeType="String"/>
+        <attribute name="secondaryPreview" optional="YES" attributeType="String"/>
+        <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="childNote" inverseEntity="Folder"/>
     </entity>
     <elements>
-        <element name="Folder" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Note" positionX="224.35546875" positionY="-58.4296875" width="128" height="103"/>
+        <element name="Folder" positionX="-8.328125" positionY="-27.5703125" width="128" height="88"/>
     </elements>
 </model>

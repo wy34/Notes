@@ -24,6 +24,7 @@ class FoldersVC: UITableViewController {
         configTableView()
         setupFetchController()
         CoreDataManager.shared.loadFolders(withFetchController: fetchController!)
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     // MARK: - Navbar
@@ -62,7 +63,6 @@ class FoldersVC: UITableViewController {
     func configTableView() {
         tableView.backgroundColor = .tertiarySystemBackground
         tableView.register(FolderCell.self, forCellReuseIdentifier: FolderCell.reuseId)
-        //tableView.register(FolderNameCell.self, forCellReuseIdentifier: FolderNameCell.reuseId)
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets.zero
         
@@ -140,6 +140,18 @@ extension FoldersVC {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45
     }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            if let folderToDelete = self.fetchController?.object(at: indexPath) {
+                CoreDataManager.shared.delete(folder: folderToDelete)
+                completion(true)
+                // not deleting from sqlite
+            }
+        }
+        
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
 }
 
 // MARK: - NSFetchResultsControllerDelegate
@@ -157,6 +169,10 @@ extension FoldersVC: NSFetchedResultsControllerDelegate {
             case .insert:
                 if let newIndexPath = newIndexPath {
                     self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                }
+            case .delete:
+                if let indexPath = indexPath {
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
                 }
             default:
                 break
