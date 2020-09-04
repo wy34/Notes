@@ -101,6 +101,7 @@ extension NotesVC {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let contentVC = ContentVC()
+        contentVC.selectedNote = fetchController?.object(at: indexPath)
         navigationController?.pushViewController(contentVC, animated: true)
     }
 }

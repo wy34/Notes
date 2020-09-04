@@ -11,7 +11,7 @@ import UIKit
 class ContentVC: UIViewController {
     // MARK: - Constants/Variables
     var parentFolder: Folder!
-    var isNoteCreated = false
+    var selectedNote: Note!
     
     var textInputStringComponents: [String] {
         if let textInput = textView.text {
@@ -65,6 +65,11 @@ class ContentVC: UIViewController {
         layoutSubviews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        displayExistingNote()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if textView.text.isEmpty {
@@ -75,8 +80,8 @@ class ContentVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if !textView.text.isEmpty {
-            CoreDataManager.shared.createNote(withMainPreview: mainPreview, andSecondaryPreview: secondaryPreview, inFolder: parentFolder)
+        if !textView.text.isEmpty && selectedNote == nil {
+            CoreDataManager.shared.createNote(withContent: textView.text, mainPreview: mainPreview, andSecondaryPreview: secondaryPreview, inFolder: parentFolder)
         }
     }
     
@@ -106,6 +111,17 @@ class ContentVC: UIViewController {
         
         view.addSubview(textView)
         textView.anchor(top: dateLabel.bottomAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingRight: 18, paddingBottom: 18, paddingLeft: 18)
+    }
+    
+    // MARK: - Display existing note
+    func displayExistingNote() {
+        if let selectedNote = selectedNote {
+            self.textView.text = selectedNote.fullContent
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d, yyyy"
+            self.dateLabel.text = dateFormatter.string(from: selectedNote.date!)
+        }
     }
     
     // MARK: - Selector

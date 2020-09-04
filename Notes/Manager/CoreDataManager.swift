@@ -38,8 +38,9 @@ class CoreDataManager {
         save(withContext: context!)
     }
     
-    func createNote(withMainPreview mp: String, andSecondaryPreview sp: String, inFolder folder: Folder) {
+    func createNote(withContent c: String, mainPreview mp: String, andSecondaryPreview sp: String, inFolder folder: Folder) {
         let note = Note(context: context!)
+        note.fullContent = c
         note.mainPreview = mp
         note.secondaryPreview = sp
         note.date = Date()
