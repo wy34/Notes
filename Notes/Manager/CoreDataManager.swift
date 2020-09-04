@@ -20,11 +20,10 @@ class CoreDataManager {
         }
     }
 
-    func createFolder(withName name: String?, andCount count: Int) {
+    func createFolder(withName name: String?) {
         guard let folderName = name else { return }
         let folder = Folder(context: context!)
         folder.name = folderName
-        folder.noteCount = Int64(count)
         save(withContext: context!)
     }
     
@@ -46,5 +45,11 @@ class CoreDataManager {
         note.date = Date()
         note.parentFolder = folder
         save(withContext: context!)
+    }
+    
+    func loadNotes(withFetchController controller: NSFetchedResultsController<Note>) {
+        do {
+            try? controller.performFetch()
+        }
     }
 }

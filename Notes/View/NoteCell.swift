@@ -9,16 +9,28 @@
 import UIKit
 
 class NoteCell: UITableViewCell {
-    // MARK: - ReuseId
+    // MARK: - Constants/Variables
     static let reuseId = "NoteCell"
+    
+    var note: Note? {
+        didSet {
+            guard let note = note else { return }
+            mainPreviewLabel.text = note.mainPreview
+            secondaryPreviewLabel.text = note.secondaryPreview
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
+            dateLabel.text = dateFormatter.string(from: note.date!)
+        }
+    }
     
     // MARK: - Subviews
     private let mainPreviewLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
+        label.font = UIFont.systemFont(ofSize: 20)
         label.text = "Main Preview Title Main Preview Title Main Preview Title Main Preview Title"
-//        label.backgroundColor = .red
         return label
     }()
     
@@ -26,6 +38,7 @@ class NoteCell: UITableViewCell {
         let label = UILabel()
         label.text = "99/99/99"
         label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .systemGray
         return label
     }()
@@ -33,6 +46,7 @@ class NoteCell: UITableViewCell {
     private let secondaryPreviewLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.text = "Secondary Preview Label Secondary Preview Label Secondary Preview Label"
         label.textColor = .systemGray2
         return label
@@ -40,7 +54,7 @@ class NoteCell: UITableViewCell {
     
     private lazy var dateSecondaryStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [dateLabel, secondaryPreviewLabel])
-        dateLabel.setDimension(width: stack.widthAnchor, wMult: 0.25)
+        dateLabel.setDimension(width: stack.widthAnchor, wMult: 0.23)
         return stack
     }()
     

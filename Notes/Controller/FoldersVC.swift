@@ -103,7 +103,7 @@ class FoldersVC: UITableViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
-            CoreDataManager.shared.createFolder(withName: self.newFolderTextField.text, andCount: 0)
+            CoreDataManager.shared.createFolder(withName: self.newFolderTextField.text)
         }
 
         saveAction.isEnabled = false

@@ -9,6 +9,30 @@
 import UIKit
 
 class ContentVC: UIViewController {
+    // MARK: - Constants/Variables
+    var parentFolder: Folder!
+    var isNoteCreated = false
+    
+    var textInputStringComponents: [String] {
+        if let textInput = textView.text {
+            let separatedComponents = textInput.components(separatedBy: "\n")
+            return separatedComponents
+        }
+        return [""]
+    }
+    
+    var mainPreview: String {
+        return textInputStringComponents[0]
+    }
+    
+    var secondaryPreview: String {
+        if textInputStringComponents.count > 1 {
+            return textInputStringComponents[1]
+        } else {
+            return "No additional text"
+        }
+    }
+    
     // MARK: - Subviews
     private let dateLabel: UILabel = {
         let label = UILabel()
@@ -45,6 +69,14 @@ class ContentVC: UIViewController {
         super.viewDidAppear(animated)
         if textView.text.isEmpty {
             textView.becomeFirstResponder()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if !textView.text.isEmpty {
+            CoreDataManager.shared.createNote(withMainPreview: mainPreview, andSecondaryPreview: secondaryPreview, inFolder: parentFolder)
         }
     }
     

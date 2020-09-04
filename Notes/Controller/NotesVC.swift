@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class NotesVC: UITableViewController {
     // MARK: - Constants/Variables
-    let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    var request: NSFetchRequest<Note>?
+    var fetchController: NSFetchedResultsController<Note>?
     var parentFolder: Folder!
     
     // MARK: - Subviews
@@ -33,13 +35,18 @@ class NotesVC: UITableViewController {
         configTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupFetchController()
+        CoreDataManager.shared.loadNotes(withFetchController: fetchController!)
+    }
+    
     // MARK: - Navbar
     func configNavbar() {
         title = "Notes"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editPressed))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
-        searchController.isActive = false
     }
     
     // MARK: - Toolbar
@@ -58,6 +65,15 @@ class NotesVC: UITableViewController {
         tableView.separatorInset = UIEdgeInsets.zero
     }
     
+    // MARK: - Setup NSFetchResultsController
+    func setupFetchController() {
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
+        request = Note.fetchRequest()
+        request?.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        fetchController = NSFetchedResultsController(fetchRequest: request!, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchController?.delegate = self
+    }
+    
     // MARK: - Selector
     @objc func editPressed() {
         
@@ -65,24 +81,52 @@ class NotesVC: UITableViewController {
     
     @objc func composeNewNote() {
         let contentVC = ContentVC()
+        contentVC.parentFolder = parentFolder
         navigationController?.pushViewController(contentVC, animated: true)
-        CoreDataManager.shared.createNote(withMainPreview: "", andSecondaryPreview: "", inFolder: parentFolder)
     }
 }
 
 // MARK: - UITableView Delegate/Datasource
 extension NotesVC {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        guard let numberOfRows = fetchController?.sections?[section].numberOfObjects else { return 0 }
+        return numberOfRows
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NoteCell.reuseId, for: indexPath) as! NoteCell
+        cell.note = fetchController?.object(at: indexPath)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let contentVC = ContentVC()
         navigationController?.pushViewController(contentVC, animated: true)
+    }
+}
+
+// MARK: - NSFetchResultsControllerDelegate
+extension NotesVC: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+            case .insert:
+                if let newIndexPath = newIndexPath {
+                    self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                }
+            case .delete:
+                if let indexPath = indexPath {
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+            default:
+                break
+        }
     }
 }
