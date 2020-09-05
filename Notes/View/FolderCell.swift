@@ -16,6 +16,7 @@ class FolderCell: UITableViewCell {
         didSet {
             guard let folder = folder else { return }
             notesLabel.text = folder.name
+            countLabel.text = "\(folder.childNote!.count)"
         }
     }
     

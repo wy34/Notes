@@ -39,6 +39,7 @@ class NotesVC: UITableViewController {
         super.viewWillAppear(animated)
         setupFetchController()
         CoreDataManager.shared.loadNotes(withFetchController: fetchController!)
+        noteCountLabel.text = noteCount()
     }
     
     // MARK: - Navbar
@@ -73,6 +74,19 @@ class NotesVC: UITableViewController {
         request?.predicate = NSPredicate(format: "parentFolder.name MATCHES %@", parentFolder.name!)
         fetchController = NSFetchedResultsController(fetchRequest: request!, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         fetchController?.delegate = self
+    }
+    
+    // MARK: - Counting the number of notes
+    func noteCount() -> String {
+        let noteCount = fetchController!.sections![0].numberOfObjects
+        
+        if noteCount == 0 {
+            return "No Notes"
+        } else if noteCount == 1 {
+            return "\(noteCount) Note"
+        } else {
+            return "\(noteCount) Notes"
+        }
     }
     
     // MARK: - Selector
