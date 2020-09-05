@@ -63,6 +63,7 @@ class ContentVC: UIViewController {
         configNavbar()
         configToolbar()
         layoutSubviews()
+        setDateTime()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,11 +118,21 @@ class ContentVC: UIViewController {
     func displayExistingNote() {
         if let selectedNote = selectedNote {
             self.textView.text = selectedNote.fullContent
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d, yyyy"
-            self.dateLabel.text = dateFormatter.string(from: selectedNote.date!)
+            setDateTime()
         }
+    }
+    
+    // MARK: - Set Date and Time
+    func setDateTime() {
+        let dateTime = selectedNote != nil ? selectedNote.date : Date()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        let date = dateFormatter.string(from: dateTime!)
+        
+        dateFormatter.dateFormat = "h:mm a"
+        let time = dateFormatter.string(from: dateTime!)
+        self.dateLabel.text = "\(date) at \(time)"
     }
     
     // MARK: - Selector

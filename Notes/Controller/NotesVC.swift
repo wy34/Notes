@@ -70,6 +70,7 @@ class NotesVC: UITableViewController {
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else { return }
         request = Note.fetchRequest()
         request?.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        request?.predicate = NSPredicate(format: "parentFolder.name MATCHES %@", parentFolder.name!)
         fetchController = NSFetchedResultsController(fetchRequest: request!, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         fetchController?.delegate = self
     }
