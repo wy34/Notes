@@ -27,6 +27,11 @@ class FoldersVC: UITableViewController {
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     // MARK: - Navbar
     func configNavbar() {
         let appearance = UINavigationBarAppearance()

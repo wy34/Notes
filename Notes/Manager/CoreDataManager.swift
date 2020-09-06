@@ -33,8 +33,13 @@ class CoreDataManager {
         }
     }
     
-    func delete(folder: Folder) {
-        context?.delete(folder)
+    func delete(folder: Folder? = nil, note: Note? = nil) {
+        if let folder = folder {
+            context?.delete(folder)
+        }
+        if let note = note {
+            context?.delete(note)
+        }
         save(withContext: context!)
     }
     

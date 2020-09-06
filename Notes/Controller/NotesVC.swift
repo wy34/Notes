@@ -48,6 +48,7 @@ class NotesVC: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editPressed))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.obscuresBackgroundDuringPresentation = true
     }
     
     // MARK: - Toolbar
@@ -118,6 +119,15 @@ extension NotesVC {
         let contentVC = ContentVC()
         contentVC.selectedNote = fetchController?.object(at: indexPath)
         navigationController?.pushViewController(contentVC, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            let noteToDelete = self.fetchController?.object(at: indexPath)
+            CoreDataManager.shared.delete(note: noteToDelete)
+            completion(true)
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 
