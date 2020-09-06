@@ -142,7 +142,8 @@ class ContentVC: UIViewController {
     }
     
     @objc func trashPressed() {
-        
+        navigationController?.popViewController(animated: true)
+        CoreDataManager.shared.delete(note: selectedNote)
     }
     
     @objc func sharePressed() {

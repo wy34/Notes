@@ -151,6 +151,7 @@ extension FoldersVC {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
             if let folderToDelete = self.fetchController?.object(at: indexPath) {
                 CoreDataManager.shared.delete(folder: folderToDelete)
+                // need to delete any notes 
                 completion(true)
             }
         }
