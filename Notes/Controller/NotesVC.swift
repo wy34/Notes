@@ -150,6 +150,7 @@ extension NotesVC: NSFetchedResultsControllerDelegate {
             case .delete:
                 if let indexPath = indexPath {
                     self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    noteCountLabel.text = noteCount()
                 }
             default:
                 break
